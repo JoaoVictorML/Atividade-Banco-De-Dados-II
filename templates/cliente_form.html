@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block titulo %}{{ 'Editar cliente' if cliente else 'Novo cliente' }}{% endblock %}
+
+{% block conteudo %}
+<div class="cabecalho-pagina">
+  <h1>{{ 'Editar cliente' if cliente else 'Novo cliente' }}</h1>
+</div>
+
+<form class="cartao formulario" method="post" novalidate>
+  <div class="campo {{ 'tem-erro' if erros.nome }}">
+    <label for="nome">Nome completo</label>
+    <input id="nome" name="nome" type="text" maxlength="100" value="{{ dados.get('nome', '') }}" required autofocus>
+    {% if erros.nome %}<small class="erro">{{ erros.nome }}</small>{% endif %}
+  </div>
+
+  <div class="campo {{ 'tem-erro' if erros.email }}">
+    <label for="email">E-mail</label>
+    <input id="email" name="email" type="email" maxlength="120" value="{{ dados.get('email', '') }}" required>
+    {% if erros.email %}<small class="erro">{{ erros.email }}</small>{% endif %}
+  </div>
+
+  <div class="campo">
+    <label for="telefone">Telefone <span class="opcional">(opcional)</span></label>
+    <input id="telefone" name="telefone" type="tel" maxlength="20" value="{{ dados.get('telefone') or '' }}" placeholder="(00) 00000-0000">
+  </div>
+
+  <div class="acoes-form">
+    <button class="btn btn-primario" type="submit">{{ 'Salvar alterações' if cliente else 'Cadastrar cliente' }}</button>
+    <a class="btn btn-fantasma" href="{{ url_for('cliente_detalhe', cliente_id=cliente.id) if cliente else url_for('index') }}">Cancelar</a>
+  </div>
+</form>
+{% endblock %}

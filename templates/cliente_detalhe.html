@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block titulo %}{{ cliente.nome }}{% endblock %}
+
+{% block conteudo %}
+<p class="migalhas"><a href="{{ url_for('index') }}">← Clientes</a></p>
+
+<div class="cabecalho-pagina">
+  <h1>{{ cliente.nome }}</h1>
+  <div class="grupo-botoes">
+    <a class="btn" href="{{ url_for('cliente_editar', cliente_id=cliente.id) }}">Editar</a>
+    <form class="inline" method="post" action="{{ url_for('cliente_excluir', cliente_id=cliente.id) }}"
+          onsubmit="return confirm('Excluir este cliente e todos os seus endereços?');">
+      <button class="btn btn-perigo" type="submit">Excluir</button>
+    </form>
+  </div>
+</div>
+
+<section class="cartao">
+  <dl class="dados">
+    <div><dt>E-mail</dt><dd>{{ cliente.email }}</dd></div>
+    <div><dt>Telefone</dt><dd>{{ cliente.telefone or '—' }}</dd></div>
+    <div><dt>Código</dt><dd>#{{ cliente.id }}</dd></div>
+  </dl>
+</section>
+
+<div class="cabecalho-secao">
+  <h2>Endereços <span class="selo">{{ cliente.enderecos|length }}</span></h2>
+  <a class="btn btn-primario btn-pequeno" href="{{ url_for('endereco_novo', cliente_id=cliente.id) }}">+ Novo endereço</a>
+</div>
+
+{% if cliente.enderecos %}
+<div class="grade">
+  {% for e in cliente.enderecos %}
+  <article class="cartao endereco">
+    <h3>{{ e.rua }}, {{ e.numero }}</h3>
+    <p>{{ e.cidade }} / {{ e.estado }}</p>
+    <p class="cep">CEP {{ e.cep }}</p>
+    <div class="grupo-botoes">
+      <a class="btn btn-pequeno" href="{{ url_for('endereco_editar', endereco_id=e.id) }}">Editar</a>
+      <form class="inline" method="post" action="{{ url_for('endereco_excluir', endereco_id=e.id) }}"
+            onsubmit="return confirm('Excluir este endereço?');">
+        <button class="btn btn-pequeno btn-perigo" type="submit">Excluir</button>
+      </form>
+    </div>
+  </article>
+  {% endfor %}
+</div>
+{% else %}
+<div class="vazio"><p>Este cliente ainda não tem endereços.</p></div>
+{% endif %}
+{% endblock %}

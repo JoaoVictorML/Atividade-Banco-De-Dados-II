@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block titulo %}Não encontrado{% endblock %}
+{% block conteudo %}
+<div class="vazio">
+  <h1>404</h1>
+  <p>A página ou o registro que você procura não existe.</p>
+  <a class="btn btn-primario" href="{{ url_for('index') }}">Voltar para a lista</a>
+</div>
+{% endblock %}

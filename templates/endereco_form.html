@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block titulo %}{{ 'Editar endereço' if endereco else 'Novo endereço' }}{% endblock %}
+
+{% block conteudo %}
+<p class="migalhas"><a href="{{ url_for('cliente_detalhe', cliente_id=cliente.id) }}">← {{ cliente.nome }}</a></p>
+
+<div class="cabecalho-pagina">
+  <h1>{{ 'Editar endereço' if endereco else 'Novo endereço' }}</h1>
+</div>
+
+<form class="cartao formulario" method="post" novalidate>
+  <div class="linha">
+    <div class="campo campo-grande {{ 'tem-erro' if erros.rua }}">
+      <label for="rua">Rua / Avenida</label>
+      <input id="rua" name="rua" type="text" maxlength="150" value="{{ dados.get('rua', '') }}" required autofocus>
+      {% if erros.rua %}<small class="erro">{{ erros.rua }}</small>{% endif %}
+    </div>
+    <div class="campo campo-pequeno {{ 'tem-erro' if erros.numero }}">
+      <label for="numero">Número</label>
+      <input id="numero" name="numero" type="text" maxlength="10" value="{{ dados.get('numero', '') }}" required>
+      {% if erros.numero %}<small class="erro">{{ erros.numero }}</small>{% endif %}
+    </div>
+  </div>
+
+  <div class="linha">
+    <div class="campo campo-grande {{ 'tem-erro' if erros.cidade }}">
+      <label for="cidade">Cidade</label>
+      <input id="cidade" name="cidade" type="text" maxlength="80" value="{{ dados.get('cidade', '') }}" required>
+      {% if erros.cidade %}<small class="erro">{{ erros.cidade }}</small>{% endif %}
+    </div>
+    <div class="campo campo-pequeno {{ 'tem-erro' if erros.estado }}">
+      <label for="estado">Estado</label>
+      <select id="estado" name="estado" required>
+        <option value="">UF</option>
+        {% for uf in ESTADOS %}
+        <option value="{{ uf }}" {{ 'selected' if dados.get('estado') == uf }}>{{ uf }}</option>
+        {% endfor %}
+      </select>
+      {% if erros.estado %}<small class="erro">{{ erros.estado }}</small>{% endif %}
+    </div>
+  </div>
+
+  <div class="campo campo-medio {{ 'tem-erro' if erros.cep }}">
+    <label for="cep">CEP</label>
+    <input id="cep" name="cep" type="text" inputmode="numeric" maxlength="9" placeholder="00000-000" value="{{ dados.get('cep', '') }}" required>
+    {% if erros.cep %}<small class="erro">{{ erros.cep }}</small>{% endif %}
+  </div>
+
+  <div class="acoes-form">
+    <button class="btn btn-primario" type="submit">{{ 'Salvar alterações' if endereco else 'Adicionar endereço' }}</button>
+    <a class="btn btn-fantasma" href="{{ url_for('cliente_detalhe', cliente_id=cliente.id) }}">Cancelar</a>
+  </div>
+</form>
+{% endblock %}

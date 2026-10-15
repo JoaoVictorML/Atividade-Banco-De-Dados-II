@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block titulo %}Clientes{% endblock %} · Gestão de Clientes</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <header class="topo">
+    <div class="container topo-conteudo">
+      <a class="marca" href="{{ url_for('index') }}">
+        <span class="marca-icone">◈</span> Gestão de Clientes
+      </a>
+      <nav class="menu">
+        <a href="{{ url_for('index') }}" class="{{ 'ativo' if request.endpoint in ('index','cliente_detalhe','cliente_editar') }}">Clientes</a>
+        <a href="{{ url_for('relatorio') }}" class="{{ 'ativo' if request.endpoint == 'relatorio' }}">Relatório (JOIN)</a>
+        <a href="{{ url_for('cliente_novo') }}" class="btn btn-primario btn-pequeno">+ Novo cliente</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    {% with mensagens = get_flashed_messages(with_categories=true) %}
+      {% for categoria, mensagem in mensagens %}
+        <div class="alerta alerta-{{ categoria }}" role="status">{{ mensagem }}</div>
+      {% endfor %}
+    {% endwith %}
+
+    {% block conteudo %}{% endblock %}
+  </main>
+
+  <footer class="rodape container">
+    Flask + SQLAlchemy · CRUD de clientes e endereços
+  </footer>
+</body>
+</html>
